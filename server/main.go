@@ -1,5 +1,11 @@
 package main
 
+/*
+@author ajeng tya
+@date 10 Juni 2019
+
+Server Websocket
+*/
 import (
 	"log"
 	"net/http"
@@ -19,8 +25,8 @@ var upgrader = websocket.Upgrader{
 
 // Define our message object
 type Message struct {
-	Email    string `json:"email"`
-	Username string `json:"username"`
+	SenderId 		int	`json:"sender_id"`
+	RecipientId    int `json:"recepient_id"`
 	Message  string `json:"message"`
 }
 
