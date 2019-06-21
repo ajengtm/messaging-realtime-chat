@@ -68,6 +68,7 @@ func handleConnections(w http.ResponseWriter, r *http.Request) {
 		}
 		// Send the newly received message to the broadcast channel
 		broadcast <- msg
+		log.Printf("message: %v", msg)
 
 	}
 }
@@ -80,7 +81,6 @@ func handleMessages() {
 		for client := range clients {
 			err := client.WriteJSON(msg)
 
-			log.Println(msg)
 			if err != nil {
 				log.Printf("error: %v", err)
 				client.Close()

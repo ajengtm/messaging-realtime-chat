@@ -7,34 +7,34 @@ info:
 host: localhost:8081
 basePath: /messaging/v1
 schemes:
-  - http
+- http
 consumes:
-  - application/json
+- application/json
 produces:
-  - application/json
+- application/json
 paths:
   /messages:
     post:
       description: This API for Create a New Message
       summary: New Message
       tags:
-        - Misc
+      - Misc
       operationId: MessagesPost
       deprecated: false
       produces:
-        - application/json
+      - application/json
       parameters:
-        - name: Content-Type
-          in: header
-          required: true
-          type: string
-          description: ''
-        - name: Body
-          in: body
-          required: true
-          description: ''
-          schema:
-            $ref: '#/definitions/NewMessageRequest'
+      - name: Content-Type
+        in: header
+        required: true
+        type: string
+        description: ''
+      - name: Body
+        in: body
+        required: true
+        description: ''
+        schema:
+          $ref: '#/definitions/NewMessageRequest'
       responses:
         201:
           description: ''
@@ -43,174 +43,87 @@ paths:
           examples:
             application/json:
               code: 1000
-              message: Success
-          headers:
-            Date:
-              type: string
-              default: Mon, 20 May 2019 05:46:19 GMT
-            Content-Length:
-              type: string
-              default: 33
+              message: Delivered
+
+  /messages/history:
     get:
-      description: API for display message in real time
-      summary: Get Message List By User ID
+      description: ' API for collect message that has been sent out'
+      summary: Get Message History by senderId
       tags:
-        - Misc
-      operationId: MessagesGet
-      deprecated: false
-      produces:
-        - application/json
-      parameters:
-        - name: user_id
-          in: query
-          required: true
-          type: integer
-          format: int32
-          description: ''
-      responses:
-        200:
-          description: ''
-          schema:
-            $ref: '#/definitions/GetMessageListByUserIDSuccess'
-          examples:
-            application/json:
-              code: 1000
-              message: Success
-              data:
-                - message_id: 6
-                  to_user_id: 2
-                  subject: okem
-                  text: blablabla
-                  status: sending
-                  created_date: 2019-05-19 23:47:43 +0700 WIB
-                  last_updated: 0001-01-01 00:00:00 +0000 UTC
-                - message_id: 5
-                  to_user_id: 2
-                  subject: okem
-                  text: blablabla
-                  status: sending
-                  created_date: 2019-05-19 16:03:59 +0700 WIB
-                  last_updated: 0001-01-01 00:00:00 +0000 UTC
-                - message_id: 4
-                  to_user_id: 2
-                  subject: okem
-                  text: blablabla
-                  status: sending
-                  created_date: 2019-05-19 16:01:26 +0700 WIB
-                  last_updated: 0001-01-01 00:00:00 +0000 UTC
-                - message_id: 3
-                  to_user_id: 2
-                  subject: okem
-                  text: blablabla
-                  status: received
-                  created_date: 2019-05-19 14:23:14 +0700 WIB
-                  last_updated: 2019-05-19 14:24:56 +0700 WIB
-                - message_id: 2
-                  to_user_id: 2
-                  subject: okem
-                  text: blablabla
-                  status: sending
-                  created_date: 2019-05-19 12:40:36 +0700 WIB
-                  last_updated: 0001-01-01 00:00:00 +0000 UTC
-                - message_id: 1
-                  to_user_id: 2
-                  subject: okem
-                  text: blablabla
-                  status: sending
-                  created_date: 2019-05-19 11:56:28 +0700 WIB
-                  last_updated: 0001-01-01 00:00:00 +0000 UTC
-          headers:
-            Date:
-              type: string
-              default: Sun, 19 May 2019 16:52:30 GMT
-            Content-Length:
-              type: string
-              default: 1129
-  /messages/inbox:
-    get:
-      description: ' API for collect message that has been sent out or Receive Message'
-      summary: Get Message Inbox
-      tags:
-        - Misc
+      - Misc
       operationId: MessagesInboxGet
       deprecated: false
       produces:
-        - application/json
+      - application/json
       parameters:
-        - name: user_id
-          in: query
-          required: true
-          type: integer
-          format: int32
-          description: ''
+      - name: sender_id
+        in: query
+        required: true
+        type: integer
+        format: int32
+        description: ''
       responses:
         200:
           description: ''
           schema:
-            $ref: '#/definitions/GetMessageInboxSuccess'
+            $ref: '#/definitions/GetHistoryMessageSuccess'
           examples:
             application/json:
               code: 1000
               message: Success
               data:
-                - message_id: 84
-                  from_user_id: 1
-                  subject: okem
-                  text: blablabla
-                  status: received
-                  created_date: 2019-05-20 06:21:33 +0700 WIB
-                  last_updated: 2019-05-20 06:21:45 +0700 WIB
-                - message_id: 83
-                  from_user_id: 1
-                  subject: okem
-                  text: blablabla
-                  status: received
-                  created_date: 2019-05-20 06:21:31 +0700 WIB
-                  last_updated: 2019-05-20 06:21:42 +0700 WIB
-                - message_id: 82
-                  from_user_id: 1
-                  subject: okem
-                  text: blablabla
-                  status: received
-                  created_date: 2019-05-20 06:21:30 +0700 WIB
-                  last_updated: 2019-05-20 06:21:39 +0700 WIB
-          headers:
-            Date:
-              type: string
-              default: Mon, 20 May 2019 05:50:45 GMT
-            Content-Length:
-              type: string
-              default: 597
+              - id: 84
+                sender_id: 1
+                recepient_id: 10
+                message: hello
+                status: 2
+                status_name: Delivered,
+                created_date: "2019-05-20 06:21:33"
+                last_updated: "2019-05-20 06:21:33"
+              - id: 85
+                sender_id: 1
+                recepient_id: 10
+                message: Yeah you
+                status: 2
+                status_name: Delivered,
+                created_date: "2019-05-20 06:21:33"
+                last_updated: "2019-05-20 06:21:33"
+              - id: 86
+                sender_id: 1
+                recepient_id: 10
+                message: How are you ?
+                status: 2
+                status_name: Delivered,
+                created_date: "2019-05-20 06:21:33"
+                last_updated: "2019-05-20 06:21:33"
+
 definitions:
   NewMessageRequest:
     title: NewMessageRequest
     example:
-      user_id: 1
-      subject: okem
-      to_user_id: 2
-      text: blablabla
+      sender_id: 1
+      recepient_id: 10
+      text: Haloo
     type: object
     properties:
-      user_id:
+      sender_id:
         type: integer
         format: int32
-      subject:
-        type: string
-      to_user_id:
+      recepient_id:
         type: integer
         format: int32
-      text:
+      message:
         type: string
     required:
-      - user_id
-      - subject
-      - to_user_id
-      - text
+    - user_id
+    - subject
+    - to_user_id
+    - text
   NewMessageSuccessResponse:
     title: NewMessageSuccessResponse
     example:
       code: 1000
-      message: Success
+      message: Delivered
     type: object
     properties:
       code:
@@ -219,133 +132,35 @@ definitions:
       message:
         type: string
     required:
-      - code
-      - message
-  GetMessageListByUserIDSuccess:
-    title: GetMessageListByUserIDSuccess
-    example:
-      code: 1000
-      message: Success
-      data:
-        - message_id: 6
-          to_user_id: 2
-          subject: okem
-          text: blablabla
-          status: sending
-          created_date: 2019-05-19 23:47:43 +0700 WIB
-          last_updated: 0001-01-01 00:00:00 +0000 UTC
-        - message_id: 5
-          to_user_id: 2
-          subject: okem
-          text: blablabla
-          status: sending
-          created_date: 2019-05-19 16:03:59 +0700 WIB
-          last_updated: 0001-01-01 00:00:00 +0000 UTC
-        - message_id: 4
-          to_user_id: 2
-          subject: okem
-          text: blablabla
-          status: sending
-          created_date: 2019-05-19 16:01:26 +0700 WIB
-          last_updated: 0001-01-01 00:00:00 +0000 UTC
-        - message_id: 3
-          to_user_id: 2
-          subject: okem
-          text: blablabla
-          status: received
-          created_date: 2019-05-19 14:23:14 +0700 WIB
-          last_updated: 2019-05-19 14:24:56 +0700 WIB
-        - message_id: 2
-          to_user_id: 2
-          subject: okem
-          text: blablabla
-          status: sending
-          created_date: 2019-05-19 12:40:36 +0700 WIB
-          last_updated: 0001-01-01 00:00:00 +0000 UTC
-        - message_id: 1
-          to_user_id: 2
-          subject: okem
-          text: blablabla
-          status: sending
-          created_date: 2019-05-19 11:56:28 +0700 WIB
-          last_updated: 0001-01-01 00:00:00 +0000 UTC
-    type: object
-    properties:
-      code:
-        type: integer
-        format: int32
-      message:
-        type: string
-      data:
-        type: array
-        items:
-          $ref: '#/definitions/Datum'
-    required:
-      - code
-      - message
-      - data
-  Datum:
-    title: Datum
-    type: object
-    properties:
-      message_id:
-        example: 6
-        type: integer
-        format: int32
-      to_user_id:
-        example: 2
-        type: integer
-        format: int32
-      subject:
-        example: okem
-        type: string
-      text:
-        example: blablabla
-        type: string
-      status:
-        example: sending
-        type: string
-      created_date:
-        example: 2019-05-19 23:47:43 +0700 WIB
-        type: string
-      last_updated:
-        example: 0001-01-01 00:00:00 +0000 UTC
-        type: string
-    required:
-      - message_id
-      - to_user_id
-      - subject
-      - text
-      - status
-      - created_date
-      - last_updated
-  GetMessageInboxSuccess:
+    - code
+    - message
+  GetHistoryMessageSuccess:
     title: GetMessageInboxSuccess
     example:
       code: 1000
       message: Success
       data:
-        - message_id: 84
-          from_user_id: 1
-          subject: okem
-          text: blablabla
-          status: received
-          created_date: 2019-05-20 06:21:33 +0700 WIB
-          last_updated: 2019-05-20 06:21:45 +0700 WIB
-        - message_id: 83
-          from_user_id: 1
-          subject: okem
-          text: blablabla
-          status: received
-          created_date: 2019-05-20 06:21:31 +0700 WIB
-          last_updated: 2019-05-20 06:21:42 +0700 WIB
-        - message_id: 82
-          from_user_id: 1
-          subject: okem
-          text: blablabla
-          status: received
-          created_date: 2019-05-20 06:21:30 +0700 WIB
-          last_updated: 2019-05-20 06:21:39 +0700 WIB
+      - id: 84
+        sender_id: 1
+        recepient_id: 10
+        message: hello
+        status: delivered
+        created_date: '2019-05-20 06:21:33'
+        last_updated: "2019-05-20 06:21:33"
+      - id: 85
+        sender_id: 1
+        recepient_id: 10
+        message: Yeah you
+        status: delivered
+        created_date: "2019-05-20 06:21:33"
+        last_updated: "2019-05-20 06:21:33"
+      - id: 86
+        sender_id: 1
+        recepient_id: 10
+        message: How are you ?
+        status: delivered
+        created_date: "2019-05-20 06:21:33"
+        last_updated: "2019-05-20 06:21:33"
     type: object
     properties:
       code:
@@ -358,44 +173,45 @@ definitions:
         items:
           $ref: '#/definitions/Datum1'
     required:
-      - code
-      - message
-      - data
+    - code
+    - message
+    - data
   Datum1:
     title: Datum1
     type: object
     properties:
-      message_id:
+      id:
         example: 84
         type: integer
         format: int32
-      from_user_id:
+      sender_id:
         example: 1
         type: integer
         format: int32
-      subject:
-        example: okem
-        type: string
-      text:
+      recepient_id:
+        example: 1
+        type: integer
+        format: int32
+      message:
         example: blablabla
         type: string
       status:
         example: received
         type: string
-      created_date:
-        example: 2019-05-20 06:21:33 +0700 WIB
+      created_at:
+        example: "2019-05-20 06:21:33"
         type: string
-      last_updated:
-        example: 2019-05-20 06:21:45 +0700 WIB
+      updated_at:
+        example: "2019-05-20 06:21:45"
         type: string
     required:
-      - message_id
-      - from_user_id
-      - subject
-      - text
-      - status
-      - created_date
-      - last_updated
+    - id
+    - sender_id
+    - recepient_id
+    - message
+    - status
+    - created_at
+    - updated_at
 tags:
-  - name: Misc
-    description: ''
+- name: Misc
+  description: ''
