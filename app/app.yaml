@@ -1,0 +1,19 @@
+app:
+  name: messaging
+  port: 8000
+  env: dev #dev|stg|prod
+  timezone: Asia/Jakarta
+  debug: true  #in production set false
+
+MariaDB:
+  db_name: messaging
+  host: localhost
+  port: 3306
+  user: root
+  password: ''
+  charset: utf8
+
+log:
+  dir: "logs"
+  filename: "messaging.log"
+

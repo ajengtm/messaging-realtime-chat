@@ -9,7 +9,6 @@ Server Websocket
 import (
 	"log"
 	"net/http"
-
 	"github.com/gorilla/websocket"
 )
 
@@ -26,25 +25,16 @@ var upgrader = websocket.Upgrader{
 // Define our message object
 type Message struct {
 	SenderId 		int	`json:"sender_id"`
-	RecipientId    int `json:"recepient_id"`
-	Message  string `json:"message"`
+	RecipientId    	int `json:"recepient_id"`
+	Message  		string `json:"message"`
 }
 
 func main() {
-	// Create a simple file server
-	fs := http.FileServer(http.Dir("../public"))
-	http.Handle("/", fs)
-
-
-
 	// Configure websocket route
 	http.HandleFunc("/ws", handleConnections)
 
-	//http.HandleFunc("/message", sendMessage)
-
 	// Start listening for incoming chat messages
 	go handleMessages()
-
 
 	// Start the server on localhost port 8000 and log any errors
 	log.Println("http server started on :8080")
@@ -60,7 +50,7 @@ func handleConnections(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	log.Println("handleConnections awal")
+
 	// Make sure we close the connection when the function returns
 	defer ws.Close()
 
@@ -78,21 +68,18 @@ func handleConnections(w http.ResponseWriter, r *http.Request) {
 		}
 		// Send the newly received message to the broadcast channel
 		broadcast <- msg
-		log.Println("handleConnections loop")
-		log.Println(msg)
 
 	}
 }
 
 func handleMessages() {
 	for {
-		log.Println("handleMessages atas")
 		// Grab the next message from the broadcast channel
 		msg := <-broadcast
 		// Send it out to every client that is currently connected
 		for client := range clients {
 			err := client.WriteJSON(msg)
-			log.Println("handleMessages loop")
+
 			log.Println(msg)
 			if err != nil {
 				log.Printf("error: %v", err)
